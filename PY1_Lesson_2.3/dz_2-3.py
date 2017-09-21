@@ -1,6 +1,6 @@
 import json
 import chardet
-from pprint import pprint
+# from pprint import pprint
 
 
 def cp_identify(file):
@@ -32,52 +32,46 @@ def form_data_structure(files_list, chars_more):
 			words_dict['news'] = news_dscrptns
 			data_list.append(words_dict)
 			
-	top_ten_words(data_list)
+	top_ten_words(data_list, chars_more)
 		
 
-def top_ten_words(data_list):		
+def top_ten_words(data_list, chars_more):
+	print("\nТоп 10 часто встречающихся слов, длиннее {} "
+				"символов:".format(chars_more))
+				
 	for data in data_list:
-		# words_count_list = list()
-		# max_words_list = list()
 		top_ten_list = list()
 		
 		for i in range(10):
-			
 			words_count_list = list()
 			max_words_list = list()
-			# top_ten_list = list()
 			
 			words_list = data['news']
 			for word in words_list:
 				word_count = words_list.count(word)
 				words_count_list.append(word_count)
-			# print(sorted(words_count_list))
 			max_count = max(words_count_list)
-			# print('\n\tMax count: ', max_count)
 			max_word_index = words_count_list.index(max_count)
-			# print('Word: ', words_list[max_word_index])
-			
 			max_words_indexes = list(filter(lambda x: 
 					words_count_list[x] == max_count, 
 					range(len(words_list))))
 			for index in max_words_indexes:
-				# print(words_list[index])
 				max_words_list.append(words_list[index])
-			
-			# print(max_words_indexes)
 			words_set = set(max_words_list)
-			# print(words_set)
-			
 			for word in words_set:
 				top_ten_list.append(word)
 				while word in words_list:
 					words_list.remove(word)
-				# print(word in words_list)
 	
 		print('\n\tFile: ', data['file'])
-		print('Top ten words: ', top_ten_list[:10])
+		for num, value in enumerate(top_ten_list[:10]):
+			print(num + 1, '-', value)
 	
 	
-# Второй аргумент - число символов в слове - в данном случае поиск идет
-# по словам длиннее шести символов (начиная с семи символов).
-form_data_structure(['newsafr.json', 'newscy.json', 'newsfr.json', 'newsit.json'], 6)
+# Второй аргумент - число символов в слове - в данном 
+# случае поиск идет по словам длиннее шести символов 
+# (начиная с семи символов).
+form_data_structure(['newsafr.json', 'newscy.json', 'newsfr.json', 
+		'newsit.json'], 6)
+# Программа работает корректно при значении данного 
+# параметра не более 9.
