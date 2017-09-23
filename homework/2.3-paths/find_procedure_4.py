@@ -77,8 +77,8 @@ def sql_select():
 def file_search(sql_files_list):
 	"""
 	Ищет строку из пользовательского ввода сначала 
-	в названиях файлов, затем - построчно
-	в каждом файле из переданного списка.
+	в названиях файлов; если нет в названии - построчно
+	в файле.
 	"""
 	user_input = ""
 	interim_list = list()
@@ -87,7 +87,7 @@ def file_search(sql_files_list):
 	for file in sql_files_list:
 		if file.find(user_input) != -1:
 			interim_list.append(file)
-		
+			continue
 		_file = os.path.join(current_dir, migrations, file)
 		cp = cp_identify(_file)
 		with open(_file, encoding=cp) as t_file:
