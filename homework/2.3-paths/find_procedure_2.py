@@ -36,18 +36,38 @@
 # не забываем организовывать собственный код в функции
 
 
+#  !!! Внимание: find_procedure_2.py ищется по всему диску, 
+#  ссылка на который в переменной окружения ОС 'HOMEDRIVE'.
+#  find_procedure_2.py должен быть один на диске.
+
 #  Программа ищет по названиям файлов
 import os
+from pprint import pprint
 
 
-migrations = 'Migrations'
-current_dir = os.path.dirname(os.path.abspath(__file__))
+def find_py_file():
+	is_found = False
+	hdd = os.environ['HOMEDRIVE']
+	path = os.path.join(hdd)
+	for root, dirs, files in os.walk(path):
+		for _file in files:
+			if _file == 'find_procedure_2.py':
+				py_dir = os.path.abspath(_file)
+				is_found = True
+			if is_found == True:
+				return py_dir
 
+				
+migrations = 'Migrations'			
+file_dir = find_py_file()
+current_dir = os.path.dirname(file_dir)
+				
 
 def sql_select():
 	sql_files_list = list()
 	
 	files_dir = os.path.join(current_dir, migrations)
+	print('\n\tfiles_dir', files_dir)
 	files_list = os.listdir(files_dir)
 	for file in files_list:
 		file_name, file_extension = os.path.splitext(file)
@@ -75,5 +95,8 @@ def file_search(sql_files_list):
 	
 	
 if __name__ == '__main__':
+
 	sql_select()
+	
 	pass
+	
