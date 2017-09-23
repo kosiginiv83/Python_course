@@ -59,7 +59,6 @@ def sql_select():
 
 def file_search(sql_files_list):
 	user_input = ""
-	lens_list = list()
 	interim_list = list()
 	
 	user_input = input("Введите строку: ")
