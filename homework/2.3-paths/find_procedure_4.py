@@ -37,7 +37,7 @@
 
 
 
-#  Программа ищет по содержимому файлов.
+#  Программа ищет по названию и содержимому файлов.
 #  Работает только с текстовыми файлами.
 import os
 import chardet
@@ -76,7 +76,8 @@ def sql_select():
 
 def file_search(sql_files_list):
 	"""
-	Ищет строку из пользовательского ввода построчно
+	Ищет строку из пользовательского ввода сначала 
+	в названиях файлов, затем - построчно
 	в каждом файле из переданного списка.
 	"""
 	user_input = ""
@@ -84,6 +85,9 @@ def file_search(sql_files_list):
 	
 	user_input = input("Введите строку: ")
 	for file in sql_files_list:
+		if file.find(user_input) != -1:
+			interim_list.append(file)
+		
 		_file = os.path.join(current_dir, migrations, file)
 		cp = cp_identify(_file)
 		with open(_file, encoding=cp) as t_file:
