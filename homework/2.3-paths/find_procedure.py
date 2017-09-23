@@ -36,6 +36,7 @@
 # не забываем организовывать собственный код в функции
 
 
+#  Программа ищет по названиям файлов
 import os
 from pprint import pprint
 
@@ -43,9 +44,9 @@ from pprint import pprint
 migrations = 'Migrations'
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-if __name__ == '__main__':
+
+def sql_select():
 	sql_files_list = list()
-	user_input = ''
 	
 	files_dir = os.path.join(current_dir, migrations)
 	files_list = os.listdir(files_dir)
@@ -53,43 +54,29 @@ if __name__ == '__main__':
 		file_name, file_extension = os.path.splitext(file)
 		if file_extension == '.sql':
 			sql_files_list.append(file)
-	# pprint(sql_files_list)
+	file_search(sql_files_list)
+
+
+def file_search(sql_files_list):
+	user_input = ""
+	lens_list = list()
+	interim_list = list()
 	
-	while user_input != 'exit' and len(sql_files_list) != 0:
+	while user_input != 'exit' and len(sql_files_list) > 0:
 		user_input = input("Введите слово для поиска (exit для выхода):")
+		print(user_input)
 		for file in sql_files_list:
-			
+			# file_name, file_extension = os.path.splitext(file)
+			if file.find(user_input) != -1:
+				interim_list.append(file)
 		
-	# break
-	
+		sql_files_list = interim_list[:]
+		_len = len(sql_files_list)
+		pprint(sql_files_list)
+		print('Количество файлов: ', _len)
+		lens_list.append(_len)
+		
+		
+if __name__ == '__main__':
+	sql_select()
 	pass
-	
-
-# -----------------------------------------
-# import os
- 
-# path = r'C:\Python27\Tools'
- 
-# for root, dirs, files in os.walk(path):
-    # print(root)
-
-# -----------------------------------------
-# import os
-
-# for root, dirs, files in os.walk(path):
-    # print(root)
-    # for _dir in dirs:
-        # print(_dir)
-
-    # for _file in files:
-        # print(_file)
-# -----------------------------------------
-
-	# n_file = os.path.join(current_dir, 'n.txt')
-	# print(n_file)
-	
-	# dirname, fname = os.path.split(n_file)
-	# print(dirname, fname)
-	
-	# file_name, file_extension = os.path.splitext('n.txt')
-	# print(file_name, '***', file_extension)
