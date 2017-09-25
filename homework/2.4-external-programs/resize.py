@@ -11,7 +11,7 @@ def resize_imgs(prog_dir, files_dir, files_list, result_dir):
 		print("\nФайл %s с измененным размером создан." % file)
 	
 
-def main():
+if __name__ == '__main__':
 	prog_dir = os.path.dirname(os.path.abspath(__file__))
 	result_dir = os.path.join(prog_dir, 'Result')
 	
@@ -42,6 +42,3 @@ def main():
 						"'n' - чтобы выйти.")
 	else:
 		resize_imgs(prog_dir, files_dir, files_list, result_dir)
-	
-	
-main()
