@@ -37,33 +37,32 @@
 
 
 
-#  !!! Внимание: find_procedure_2.py ищется по всему диску, 
-#  ссылка на который в переменной окружения ОС 'HOMEDRIVE'.
-#  find_procedure_2.py должен быть один на диске.
-
-#  Программа ищет по названиям файлов
+#  Программа ищет по названию и содержимому файлов.
+#  Работает только с текстовыми файлами.
 import os
-# from pprint import pprint
+import chardet
+import subprocess
 
 
-def find_py_file():
-	is_found = False
-	hdd = os.environ['HOMEDRIVE']
-	for root, dirs, files in os.walk(hdd):
-		for _file in files:
-			if _file == 'find_procedure_2.py':
-				py_dir = os.path.abspath(_file)
-				is_found = True
-			if is_found == True:
-				return py_dir
+migrations = 'Migrations'
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
-				
-migrations = 'Migrations'			
-file_dir = find_py_file()
-current_dir = os.path.dirname(file_dir)
-				
+
+def cp_identify(file):
+	"""	
+	Определяет кодировку файла.
+	"""
+	with open(file, 'rb') as f:
+		data = f.read()
+		result = chardet.detect(data)
+		cp = result['encoding']
+		return cp
+
 
 def sql_select():
+	""" 
+	Формирует список из sql-файлов.
+	"""
 	sql_files_list = list()
 	
 	files_dir = os.path.join(current_dir, migrations)
@@ -73,10 +72,15 @@ def sql_select():
 		if file_extension == '.sql':
 			sql_files_list.append(file)
 			
-	file_search(sql_files_list)
+	subprocess.Popen(file_search(sql_files_list), stdin = subprocess.PIPE)
 
 
 def file_search(sql_files_list):
+	"""
+	Ищет строку из пользовательского ввода сначала 
+	в названиях файлов; если нет в названии - построчно
+	в файле.
+	"""
 	user_input = ""
 	interim_list = list()
 	
@@ -84,15 +88,23 @@ def file_search(sql_files_list):
 	for file in sql_files_list:
 		if file.find(user_input) != -1:
 			interim_list.append(file)
+			continue
+		_file = os.path.join(current_dir, migrations, file)
+		cp = cp_identify(_file)
+		with open(_file, encoding=cp) as t_file:
+			for line in t_file:
+				if user_input in line:
+					interim_list.append(file)
+					break
 
 	for item in interim_list:
 		print(os.path.join(migrations, item))
 	print('Всего: ', len(interim_list))
 	
-	file_search(interim_list)
+	subprocess.Popen(file_search(interim_list), stdin = subprocess.PIPE)
 	
 	
 if __name__ == '__main__':
-	sql_select()
+	subprocess.Popen(sql_select(), stdin = subprocess.PIPE)
 	pass
 	

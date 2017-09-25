@@ -37,13 +37,14 @@
 
 
 
-#  !!! Внимание: find_procedure_2.py ищется по всему диску, 
+#  !!! Внимание: find_procedure_6.py ищется по всему диску, 
 #  ссылка на который в переменной окружения ОС 'HOMEDRIVE'.
-#  find_procedure_2.py должен быть один на диске.
+#  find_procedure_6.py должен быть один на диске.
 
 #  Программа ищет по названиям файлов
-import os
 # from pprint import pprint
+import os
+import subprocess
 
 
 def find_py_file():
@@ -58,10 +59,10 @@ def find_py_file():
 				return py_dir
 
 				
-migrations = 'Migrations'			
 file_dir = find_py_file()
+migrations = 'Migrations'			
 current_dir = os.path.dirname(file_dir)
-				
+
 
 def sql_select():
 	sql_files_list = list()
@@ -73,7 +74,7 @@ def sql_select():
 		if file_extension == '.sql':
 			sql_files_list.append(file)
 			
-	file_search(sql_files_list)
+	subprocess.Popen(file_search(sql_files_list), stdin = subprocess.PIPE)
 
 
 def file_search(sql_files_list):
@@ -89,10 +90,10 @@ def file_search(sql_files_list):
 		print(os.path.join(migrations, item))
 	print('Всего: ', len(interim_list))
 	
-	file_search(interim_list)
+	subprocess.Popen(file_search(interim_list), stdin = subprocess.PIPE)
 	
 	
 if __name__ == '__main__':
-	sql_select()
+	subprocess.Popen(sql_select(), stdin = subprocess.PIPE)
 	pass
 	

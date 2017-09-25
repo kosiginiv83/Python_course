@@ -7,7 +7,7 @@ def resize_imgs(prog_dir, files_dir, files_list, result_dir):
 		orig_file = os.path.join(files_dir, file)
 		new_file = os.path.join(result_dir, file)
 		command = 'convert {} -resize 200 {}'.format(orig_file, new_file)
-		process = subprocess.Popen(command, stdin = subprocess.PIPE)
+		subprocess.Popen(command, stdin = subprocess.PIPE)
 		print("\nФайл %s с измененным размером создан." % file)
 	
 
@@ -43,3 +43,7 @@ if __name__ == '__main__':
 						"'n' - чтобы выйти.")
 	else:
 		exec(func_a)
+	
+	input()  # Нужна для того, чтобы окно консоли не закрылось 
+	# сразу после выполнения программы в случае запуска 
+	# файла с проводника или файлового менеджера.
