@@ -40,7 +40,8 @@ def top_ten_words(data_list):
                 freq[word] = 1
             else:
                 freq[word] += 1
-        sorted_count_pairs = sorted(freq.items(), key=lambda x: x[1], reverse=True)
+        sorted_count_pairs = sorted(freq.items(), key=lambda x: x[1],
+                                    reverse=True)
         top10 = sorted_count_pairs[:10]
         for word, freq in top10:
             print("Слово '{}' встретилось {} раз".format(word, freq))
