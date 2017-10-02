@@ -76,22 +76,20 @@ def sql_select():
 
 def file_search(sql_files_list):
 	"""
-	Ищет строку из пользовательского ввода построчно
+	Ищет строку из пользовательского ввода
 	в каждом файле из переданного списка.
 	"""
-	user_input = ""
 	interim_list = list()
 	
 	user_input = input("Введите строку: ")
 	for file in sql_files_list:
-		_file = os.path.join(current_dir, migrations, file)
-		cp = cp_identify(_file)
-		with open(_file, encoding=cp) as t_file:
-			for line in t_file:
-				if user_input in line:
-					interim_list.append(file)
-					break
-
+		file_path = os.path.join(current_dir, migrations, file)
+		cp = cp_identify(file_path)
+		with open(file_path, encoding=cp) as t_file:
+			data = t_file.read()
+			if user_input in data:
+				interim_list.append(file)
+		
 	for item in interim_list:
 		print(os.path.join(migrations, item))
 	print('Всего: ', len(interim_list))
@@ -101,4 +99,3 @@ def file_search(sql_files_list):
 	
 if __name__ == '__main__':
 	sql_select()
-	pass

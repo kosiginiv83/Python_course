@@ -58,12 +58,11 @@ def sql_select():
 
 
 def file_search(sql_files_list):
-	user_input = ""
 	interim_list = list()
 	
 	user_input = input("Введите строку: ")
 	for file in sql_files_list:
-		if file.find(user_input) != -1:
+		if user_input in file:
 			interim_list.append(file)
 
 	for item in interim_list:
@@ -71,8 +70,35 @@ def file_search(sql_files_list):
 	print('Всего: ', len(interim_list))
 	
 	file_search(interim_list)
-	
-	
+
+
 if __name__ == '__main__':
 	sql_select()
-	pass
+
+"""
+if __name__ == '__main__'
+Чтобы в случае импортирования данного модуля, код в нем не исполнился (будут
+в области видимости только строки: 40, 43, 44).
+Выполнение программы произодет только при запуске данного файла "напрямую".
+Прочитал, что это является хорошей практикой.
+Нашел на каком-то форуме пример и немного доработал его:
+
+# a.py
+def b():
+    print('def')
+print("any")
+if __name__ == '__main__':
+    print("main",__name__)
+    b()
+    import a
+else:
+    print("import",__name__)
+
+Как говорится - "вместо тысячи слов".
+	
+	
+pass
+Благодарю за разъяснение цели данной команды. Когда гуглил по ней инфу, описание
+было что-то вроде: интерпретатор игнорирует блок с данной командой - из чего
+было не совсем понятно назначение.
+"""

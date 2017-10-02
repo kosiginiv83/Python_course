@@ -47,14 +47,11 @@ import os
 
 
 def find_py_file():
-	is_found = False
 	hdd = os.environ['HOMEDRIVE']
 	for root, dirs, files in os.walk(hdd):
 		for _file in files:
 			if _file == 'find_procedure_2.py':
 				py_dir = os.path.abspath(_file)
-				is_found = True
-			if is_found == True:
 				return py_dir
 
 				
@@ -77,12 +74,11 @@ def sql_select():
 
 
 def file_search(sql_files_list):
-	user_input = ""
 	interim_list = list()
 	
 	user_input = input("Введите строку: ")
 	for file in sql_files_list:
-		if file.find(user_input) != -1:
+		if user_input in file:
 			interim_list.append(file)
 
 	for item in interim_list:
@@ -94,5 +90,4 @@ def file_search(sql_files_list):
 	
 if __name__ == '__main__':
 	sql_select()
-	pass
 	
