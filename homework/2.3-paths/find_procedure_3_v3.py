@@ -71,7 +71,8 @@ def make_dict(files_list, path):
 	ключами: name, codepage - для каждого sql-файла.
 	"""
 	files_dicts_list = list()
-	
+	print('\n\tПрограмма выполняет подготовку данных. '
+			'Пожалуйста, подождите.\n')
 	for file in files_list:
 		file_dict = dict.fromkeys(['name', 'codepage'])
 		

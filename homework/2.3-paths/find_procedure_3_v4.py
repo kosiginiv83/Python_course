@@ -36,41 +36,53 @@
 # не забываем организовывать собственный код в функции
 
 
-#  Программа ищет по названиям файлов
+
+#  Программа ищет по содержимому файлов.
+#  Работает только с текстовыми файлами.
 import os
+import chardet
 
 
-migrations = 'Migrations'
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-
-def sql_select():
-	sql_files_list = list()
-	
-	files_dir = os.path.join(current_dir, migrations)
-	files_list = os.listdir(files_dir)
-	for file in files_list:
-		file_name, file_extension = os.path.splitext(file)
-		if file_extension == '.sql':
-			sql_files_list.append(file)
-			
-	file_search(sql_files_list)
-
-
-def file_search(sql_files_list):
+def file_analyse(files_list, path):
+	"""
+	Формирует список из sql-файлов, содержимое
+	которых содержит пользовательский ввод.
+	"""
 	interim_list = list()
 	
 	user_input = input("Введите строку: ")
-	for file in sql_files_list:
-		if user_input in file:
-			interim_list.append(file)
+	for file in files_list:
+		if isinstance(file, dict):
+			file_path = os.path.join(path, file['name'])
+			with open(file_path, encoding=file['codepage']) as f:
+				data = f.read()
+				if user_input in data:
+					interim_list.append(file)
+		else:
+			file_dict = dict.fromkeys(['name', 'codepage'])
+			file_name, file_extension = os.path.splitext(file)
+			if file_extension == '.sql':
+				file_dict['name'] = file
+				file_path = os.path.join(path, file)
+				with open(file_path, 'rb') as f:
+					data = f.read()
+					result = chardet.detect(data)
+					cp = result['encoding']
+					file_dict['codepage'] = cp
+					text = data.decode(cp)
+					if user_input in text:
+						interim_list.append(file_dict)
 
 	for item in interim_list:
-		print(os.path.join(migrations, item))
+		print(os.path.join(os.path.basename(path), item['name']))
 	print('Всего: ', len(interim_list))
-	
-	file_search(interim_list)
+			
+	file_analyse(interim_list, path)
 
 
 if __name__ == '__main__':
-	sql_select()
+	migrations = 'Migrations'
+	current_dir = os.path.dirname(os.path.abspath(__file__))
+	path = os.path.join(current_dir, migrations)
+	files_list = os.listdir(path)
+	file_analyse(files_list, path)
