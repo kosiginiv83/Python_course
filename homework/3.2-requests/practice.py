@@ -1,8 +1,9 @@
+import chardet
 import os
 import requests
 
 
-def translate_it(text):
+def translate_it(original_file, result_file, language, language_need='ru'):
     """
     YANDEX translation plugin
 
@@ -22,26 +23,37 @@ def translate_it(text):
     """
     url = 'https://translate.yandex.net/api/v1.5/tr.json/translate'
     key = 'trnsl.1.1.20161025T233221Z.47834a66fd7895d0.a95fd4bfde5c1794fa433453956bd261eae80152'
-    
+     
+    print(f'\nПожалуйста, подождите. Переводится файл:\n\t{original_file}')
+	 
+    with open(original_file, 'rb') as f:
+        data = f.read()
+        cp = chardet.detect(data)
+        text = data.decode(cp['encoding'])
+
     params = {
         'key': key,
-        'lang': 'ru-en',
         'text': text,
     }
+    params['lang'] = language + '-' + language_need
     response = requests.get(url, params=params).json()
-    return ' '.join(response.get('text', []))
+    tr_text = ' '.join(response.get('text', []))
 
-
-
-def files():
-   
-    
-    # file_original =
-    # file_translate =
-    language_need = 'ru'
-    a = translate_it(file_original, result_dir, language_need)
-    print(a)
+    with open(result_file, 'w') as f:
+        f.write(tr_text)
 
 
 if __name__ == '__main__':
-    files()
+    prog_dir = os.path.dirname(os.path.abspath(__file__))
+    original_dir = os.path.join(prog_dir, 'original')
+    files_list = os.listdir(original_dir)
+    result_dir = os.path.join(prog_dir, 'translated')
+        
+    for file in files_list:
+        file_name, file_extension = os.path.splitext(file)
+        language = file_name.lower()
+        original_file = os.path.join(original_dir, file)
+        result_file = os.path.join(result_dir, file)
+        translate_it(original_file, result_file, language)
+
+    print('\nВсе файлы переведены.')
