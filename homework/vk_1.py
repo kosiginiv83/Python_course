@@ -1,5 +1,7 @@
 import requests
 from pprint import pprint
+import itertools
+import functools
 
 VERSION = '5.68'
 
@@ -50,20 +52,26 @@ print('\n\tIntersections\n')
 # int_per_pol = (set(friends_friends_dict['Перебейносов Алексей']) & 
 		# set(friends_friends_dict['Пологрудов Алексей']))
 int_list = list(friends_friends_dict.values())
-print(int_list)
-print(type(int_list))
+inter = functools.reduce(int_list[0].intersection, int_list[1:])
+
+# inter = itertools.starmap(int_list[0].intersection, range(1, len(int_list) - 1))
+# inter = int_list[0].intersection(int_list[x] for x in range(1, len(int_list) - 1))
+# inter = int_list[0].intersection(itertools.islice(int_list, 1, len(int_list) - 1))
+
+print(dir(inter))
+print('\n\t', inter)
+print(type(inter))
 
 
-# print(int_per_pol)
-# for id in int_per_pol:
-	# friend_params = {
-		# 'v': VERSION,
-		# 'user_id': id
-	# }
-	# friend_info_raw = requests.get('https://api.vk.com/method/users.get', friend_params)
-	# friend_info = friend_info_raw.json()
-	# friend_firstname = friend_info['response'][0]['first_name']
-	# friend_lastname = friend_info['response'][0]['last_name']
-	# fio = f"{friend_lastname} {friend_firstname}"
-	# print('\n', fio)
+for id in inter:
+	friend_params = {
+		'v': VERSION,
+		'user_id': id
+	}
+	friend_info_raw = requests.get('https://api.vk.com/method/users.get', friend_params)
+	friend_info = friend_info_raw.json()
+	friend_firstname = friend_info['response'][0]['first_name']
+	friend_lastname = friend_info['response'][0]['last_name']
+	fio = f"{friend_lastname} {friend_firstname}"
+	print('\n', fio)
 	
