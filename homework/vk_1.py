@@ -6,11 +6,11 @@ VERSION = '5.68'
 
 
 def get_friends(user_id):
-    my_params = {
+    params = {
         'v': VERSION,
         'user_id': user_id
     }
-    response = requests.get('https://api.vk.com/method/friends.get', my_params)
+    response = requests.get('https://api.vk.com/method/friends.get', params)
     return response.json()
 
 
