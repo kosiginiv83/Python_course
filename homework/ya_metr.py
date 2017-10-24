@@ -14,20 +14,23 @@ class YMManagement:
     
     def get_headers(self):
         headers = {
-            'Authorization': f'OAuth {self.token}'
+            'Authorization': f'OAuth {self.token}',
+            'Content-Type': 'application/x-yametrika+json',
         }
+        # print(headers)
         return headers
     
     def get_counters(self):
         url = urljoin(self.management_url, 'counters')
         headers = self.get_headers()
-        response = requests.get(self.management_url, headers=headers)
+        response = requests.get(url, headers=headers)
+        print('response', response.content)
         return [c['id'] for c in response.json()['counters']]
     
     def get_counter_info(self, counter_id):
         url = urljoin(self.management_url, f'counter/{counter_id}')
         headers = self.get_headers()
-        response = requests.get(self.management_url, headers=headers)
+        response = requests.get(url, headers=headers)
         return response.json()
 
 
@@ -38,7 +41,7 @@ class Counter:
 
 user_1 = YMManagement(TOKEN)
 counters = user_1.get_counters()
-pprint(counters)
+# pprint(counters)
 for counter_id in counters:
     counter_info = user_1.get_counter_info(counter_id)
     pprint(counter_info)
