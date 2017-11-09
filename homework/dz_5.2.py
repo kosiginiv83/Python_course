@@ -16,7 +16,6 @@
     python3 -m unittest linked_list_reverse.py
 """
 
-import unittest
 
 from typing import Iterable
 
@@ -46,36 +45,21 @@ class LinkedList:
             yield current.data
             current = current.next
 
-    def reverse(self) -> None:
-        raise NotImplementedError
+    def reverse(self):
+        pass
 
 
-class LinkedListTestCase(unittest.TestCase):
+linked_list = LinkedList([1, 2, 3])
 
-    def test_reverse(self):
-        cases = dict(
-            empty=dict(
-                items=[],
-                expected_items=[],
-            ),
-            single=dict(
-                items=[1],
-                expected_items=[1],
-            ),
-            double=dict(
-                items=[1, 2],
-                expected_items=[2, 1],
-            ),
-            triple=dict(
-                items=[1, 2, 3],
-                expected_items=[3, 2, 1],
-            ),
-        )
-        for case, data in cases.items():
-            with self.subTest(case=case):
-                linked_list = LinkedList(data['items'])
-                linked_list.reverse()
-                self.assertListEqual(
-                    data['expected_items'],
-                    list(linked_list),
-                )
+print(linked_list)
+print('=========================')
+for unit in linked_list:
+    print(unit)
+print('=========================')
+print(linked_list.head)
+#print(dir(linked_list.head.data))
+print('=========================')
+print(linked_list.head.data)
+print(linked_list.head.next.data)
+print(linked_list.head.next.next.data)
+print('=========================')
