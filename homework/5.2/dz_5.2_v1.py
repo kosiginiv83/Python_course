@@ -46,20 +46,23 @@ class LinkedList:
             current = current.next
 
     def reverse(self):
-        pass
+        temp_list = []
+        for unit in self:
+            temp_list.append(unit)
+        rev_temp_list = reversed(temp_list)
+        return LinkedList(rev_temp_list)
+    
+    @property
+    def print(self):
+        for unit in self:
+            print(unit)
 
 
-linked_list = LinkedList([1, 2, 3])
+linked_list = LinkedList([1, 2, 3, 4])
+linked_list.print
+print('linked_list.head.data:', linked_list.head.data)
+print('=========================')
 
-print(linked_list)
-print('=========================')
-for unit in linked_list:
-    print(unit)
-print('=========================')
-print(linked_list.head)
-#print(dir(linked_list.head.data))
-print('=========================')
-print(linked_list.head.data)
-print(linked_list.head.next.data)
-print(linked_list.head.next.next.data)
-print('=========================')
+reversed_list = linked_list.reverse()
+reversed_list.print
+print('reversed_list.head.data:', reversed_list.head.data)
