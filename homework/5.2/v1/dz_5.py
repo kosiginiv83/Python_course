@@ -14,6 +14,7 @@
     которые можно запустить следующей командой:
 
     python3 -m unittest linked_list_reverse.py
+    python -m unittest dz_5.py (в моем случае)
 """
 
 import unittest
@@ -47,16 +48,15 @@ class LinkedList:
             current = current.next
 
     def reverse(self):
+        """
+        Сложность алгоритма:
+        Потребление памяти в big-O notation: 
+        """
         temp_list = []
         for unit in self:
             temp_list.append(unit)
         rev_temp_list = reversed(temp_list)
         return LinkedList(rev_temp_list)
-    
-    @property
-    def print(self):
-        for unit in self:
-            print(unit)
 
 
 class LinkedListTestCase(unittest.TestCase):
@@ -83,8 +83,8 @@ class LinkedListTestCase(unittest.TestCase):
         for case, data in cases.items():
             with self.subTest(case=case):
                 linked_list = LinkedList(data['items'])
-                linked_list.reverse()
+                rev_list = linked_list.reverse()
                 self.assertListEqual(
                     data['expected_items'],
-                    list(linked_list),
+                    list(rev_list),
                 )
