@@ -27,7 +27,7 @@ class LinkedList:
     def __init__(self, values: Iterable):
         previous = None
         self.head = None
-        self.length = len(values)
+        #self.length = len(values)
         for value in values:
             current = LinkedListNode(value)
             if previous:
@@ -44,20 +44,23 @@ class LinkedList:
     def reverse(self):
         reversed_list = LinkedList([])
         current = self.head
-        for i in range(self.length):
-            current = self.head
-            while current.next:
-                previous = current
-                current = current.next
-                
-            last_element = current
+        previous = None
+        while current.next:
+            current_2 = self.head
+            while current_2.next:
+                print('++++++++++++++++++++')
+                if previous:
+                    previous.next = current_2
+                if not(reversed_list.head):
+                    reversed_list.head = current_2
+                previous = current_2
+                current_2 = current_2.next
+            print('======================')
+            node = LinkedListNode(current_2.data)
+            current_2 = None
+            current = current.next
+        return reversed_list
             
-            new_element = LinkedListNode(last_element.data)
-            reversed_list.head = reversed_list.head or current
-            new_element = previous
-            print(new_element.data)
-            print(new_element.next)
-            current = None
     
     @property
     def print(self):
