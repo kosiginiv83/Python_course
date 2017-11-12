@@ -43,9 +43,9 @@ class Counter:
             'id': counter_id,
             'metrics': 'ym:s:visits',
             'oauth_token': self.token,
+            'date1': '60daysAgo',
         }
-        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
-                                params)
+        response = requests.get(self.stat_url, params)
         print('====================Количество визитов========================')
         return response
 
@@ -55,9 +55,9 @@ class Counter:
             'id': counter_id,
             'metrics': 'ym:s:users',
             'oauth_token': self.token,
+            'date1': '60daysAgo',
         }
-        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
-                                params)
+        response = requests.get(self.stat_url, params)
         print('=============Количество уникальных посетителей================')
         return response
 
@@ -67,9 +67,9 @@ class Counter:
             'id': counter_id,
             'metrics': 'ym:s:pageviews',
             'oauth_token': self.token,
+            'date1': '60daysAgo',
         }
-        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
-                                params)
+        response = requests.get(self.stat_url, params)
         print('===============Количество просмотров страниц==================')
         return response
 
@@ -79,9 +79,9 @@ class Counter:
             'id': counter_id,
             'metrics': 'ym:s:mobilePercentage',
             'oauth_token': self.token,
+            'date1': '60daysAgo',
         }
-        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
-                                params)
+        response = requests.get(self.stat_url, params)
         print('===========Процент использования мобильных устройств==========')
         return response
 
