@@ -43,9 +43,9 @@ class Counter:
             'id': counter_id,
             'metrics': 'ym:s:visits',
             'oauth_token': self.token,
+            'date1': '60daysAgo',
         }
-        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
-                                params)
+        response = requests.get(self.stat_url, params)
         return response
 
     @property
@@ -54,9 +54,9 @@ class Counter:
             'id': counter_id,
             'metrics': 'ym:s:users',
             'oauth_token': self.token,
+            'date1': '60daysAgo',
         }
-        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
-                                params)
+        response = requests.get(self.stat_url, params)
         return response
     
     @property
@@ -65,9 +65,9 @@ class Counter:
             'id': counter_id,
             'metrics': 'ym:s:mobilePercentage',
             'oauth_token': self.token,
+            'date1': '60daysAgo',
         }
-        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
-                                params)
+        response = requests.get(self.stat_url, params)
         return response
     
     @property
@@ -76,9 +76,9 @@ class Counter:
             'id': counter_id,
             'metrics': 'ym:s:pageviews',
             'oauth_token': self.token,
+            'date1': '60daysAgo',
         }
-        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
-                                params)
+        response = requests.get(self.stat_url, params)
         return response
 
 
