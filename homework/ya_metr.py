@@ -58,6 +58,28 @@ class Counter:
         response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
                                 params)
         return response
+    
+    @property
+    def get_mobilePercentage(self):
+        params = {
+            'id': counter_id,
+            'metrics': 'ym:s:mobilePercentage',
+            'oauth_token': self.token,
+        }
+        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
+                                params)
+        return response
+    
+    @property
+    def get_pageviews(self):
+        params = {
+            'id': counter_id,
+            'metrics': 'ym:s:pageviews',
+            'oauth_token': self.token,
+        }
+        response = requests.get('https://api-metrika.yandex.ru/stat/v1/data',
+                                params)
+        return response
 
 
 class Users(YMManagement, Counter):
@@ -66,22 +88,53 @@ class Users(YMManagement, Counter):
 
 user_1 = Users(TOKEN)
 counters = user_1.get_counters()
-pprint(counters)
+print("ID счетчиков:", counters)
+
 
 for counter_id in counters:
     counter_info = user_1.get_counter_info(counter_id)
-    print('==================================================================')
-    print('+++counter_info+++')
-    pprint(counter_info)
+    print('=======================counter_info===============================')
+    # pprint(counter_info)
+    print(counter_info['counter']['site'])
+
 
 for counter_id in counters:
     response = user_1.get_visits
+    data = response.json()
     print('======================Количество визитов==========================')
-    print('+++response.json()+++')
-    pprint(response.json())
+    print(f"За период c {data['query']['date1']} по {data['query']['date2']}")
+    # pprint(data)
+    print("Минимум:", round(data['min'][0]))
+    print("Максимум:", round(data['max'][0]))
+    print("Всего:", round(data['totals'][0]))
 
 for counter_id in counters:
     response = user_1.get_users
+    data = response.json()
     print('==============Количество уникальных посетителей===================')
-    print('+++response.json()+++')
-    pprint(response.json())
+    print(f"За период c {data['query']['date1']} по {data['query']['date2']}")
+    # pprint(data)
+    print("Минимум:", round(data['min'][0]))
+    print("Максимум:", round(data['max'][0]))
+    print("Всего:", round(data['totals'][0]))
+
+for counter_id in counters:
+    response = user_1.get_pageviews
+    data = response.json()
+    print('================Количество просмотров страниц=====================')
+    print(f"За период c {data['query']['date1']} по {data['query']['date2']}")
+    # pprint(data)
+    print("Минимум:", round(data['min'][0]))
+    print("Максимум:", round(data['max'][0]))
+    print("Всего:", round(data['totals'][0]))
+
+for counter_id in counters:
+    response = user_1.get_mobilePercentage
+    data = response.json()
+    print('=============Процент использования мобильных устройств============')
+    print(f"За период c {data['query']['date1']} по {data['query']['date2']}")
+    # pprint(data)
+    print("Минимум:", round(data['min'][0]))
+    print("Максимум:", round(data['max'][0]))
+    print("Всего:", round(data['totals'][0]))
+
