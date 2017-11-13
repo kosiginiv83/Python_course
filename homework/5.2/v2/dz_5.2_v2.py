@@ -27,7 +27,7 @@ class LinkedList:
     def __init__(self, values: Iterable):
         previous = None
         self.head = None
-        self.length = len(values)
+        #self.length = len(values)
         for value in values:
             current = LinkedListNode(value)
             if previous:
@@ -42,22 +42,32 @@ class LinkedList:
             current = current.next
 
     def reverse(self):
-        reversed_list = LinkedList([])
+        #reversed_list = LinkedList([])
+        """
         current = self.head
-        for i in range(self.length):
-            current = self.head
-            while current.next:
-                previous = current
-                current = current.next
-                
-            last_element = current
+        while current.next:
+            current = current.next
+        new_head = current
+        """
+        current = self.head
+        new_head = None
+        while current.next:
+            current_2 = self.head
+            while current_2.next:
+                previous = current_2
+                current_2 = current_2.next
+            if not(new_head):
+                new_head = current_2
+            print('previous', previous.data)
+            print('current_2', current_2.data)
+            previous.next = None
+            current_2 = previous
             
-            new_element = LinkedListNode(last_element.data)
-            reversed_list.head = reversed_list.head or current
-            new_element = previous
-            print(new_element.data)
-            print(new_element.next)
-            current = None
+        self.head = new_head
+        return self
+        
+        #return reversed_list
+    
     
     @property
     def print(self):
@@ -65,11 +75,15 @@ class LinkedList:
             print(unit)
 
 
-linked_list = LinkedList([1, 2, 3, 4])
+linked_list = LinkedList([1, 2, 3, 4, 5])
 linked_list.print
 #print('linked_list.head.data:', linked_list.head.data)
 print('=========================')
 
+linked_list.reverse()
+linked_list.print
+
+print('=========================')
 #reversed_list = LinkedList([])
 reversed_list = linked_list.reverse()
 reversed_list.print
