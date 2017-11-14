@@ -49,18 +49,26 @@ class LinkedList:
 
     def reverse(self):
         """
-        Сложность алгоритма: О(n)
-        Потребление памяти в big-O notation: O(n)
+        Сложность алгоритма:
+        Потребление памяти в big-O notation:
         
         Изменится ли сложность и потребление памяти, если
         вместо связанного списка будет массив (array), и почему?
-        Ответ: в данном случае и так используется массив.
+        Ответ:
         """
-        temp_list = []
-        for unit in self:
-            temp_list.append(unit)
-        rev_temp_list = reversed(temp_list)
-        return LinkedList(rev_temp_list)
+        current = self.head
+        new_head = None
+        while current.next:
+            current_2 = self.head
+            while current_2.next:
+                previous = current_2
+                current_2 = current_2.next
+            if not (new_head):
+                new_head = current_2
+            previous.next = None
+            current_2.next = previous
+        self.head = new_head
+        return self
 
 
 class LinkedListTestCase(unittest.TestCase):
