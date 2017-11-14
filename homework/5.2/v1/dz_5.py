@@ -87,6 +87,10 @@ class LinkedListTestCase(unittest.TestCase):
         for case, data in cases.items():
             with self.subTest(case=case):
                 linked_list = LinkedList(data['items'])
+                """
+                Без присваивания новой переменной
+                реверса не происходит.
+                """
                 rev_list = linked_list.reverse()
                 self.assertListEqual(
                     data['expected_items'],

@@ -49,28 +49,30 @@ class LinkedList:
 
     def reverse(self):
         """
-        Сложность алгоритма:
-        Потребление памяти в big-O notation:
+        Сложность алгоритма: O(n**2)
+        Потребление памяти в big-O notation: O(n)
         
         Изменится ли сложность и потребление памяти, если
         вместо связанного списка будет массив (array), и почему?
-        Ответ:
+        Ответ: Сложность станет O(n), т.к. не потребуется
+        второй вложенный цикл. Потребление памяти останется прежним.
         """
-        current = self.head
-        new_head = None
-        while current.next:
-            current_2 = self.head
-            while current_2.next:
-                previous = current_2
-                current_2 = current_2.next
-            if not (new_head):
-                new_head = current_2
-            previous.next = None
-            current_2.next = previous
-        self.head = new_head
+        if self.head and self.head.next:
+            current = self.head
+            new_head = None
+            while current.next:
+                current_2 = self.head
+                while current_2.next:
+                    previous = current_2
+                    current_2 = current_2.next
+                if not (new_head):
+                    new_head = current_2
+                previous.next = None
+                current_2.next = previous
+            self.head = new_head
         return self
-
-
+        
+        
 class LinkedListTestCase(unittest.TestCase):
 
     def test_reverse(self):
@@ -95,8 +97,8 @@ class LinkedListTestCase(unittest.TestCase):
         for case, data in cases.items():
             with self.subTest(case=case):
                 linked_list = LinkedList(data['items'])
-                rev_list = linked_list.reverse()
+                linked_list.reverse()
                 self.assertListEqual(
                     data['expected_items'],
-                    list(rev_list),
+                    list(linked_list),
                 )
