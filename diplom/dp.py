@@ -1,9 +1,13 @@
 import requests
+<<<<<<< HEAD
 from pprint import pprint
+=======
+>>>>>>> 43666886519df54b875e601fec7d3f1ce4d4a326
 
 
 VERSION = '5.68'
 TOKEN = '5dfd6b0dee902310df772082421968f4c06443abecbc082a8440cb18910a56daca73ac8d04b25154a1128'
+<<<<<<< HEAD
 
 
 def get_data(user_id, query):
@@ -35,3 +39,5 @@ if __name__ == '__main__':
         friend_groups = get_data(friend_id, 'groups')
         print(friend_groups)
         print('==================================')
+=======
+>>>>>>> 43666886519df54b875e601fec7d3f1ce4d4a326
