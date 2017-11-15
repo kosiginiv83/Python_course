@@ -41,7 +41,7 @@ if __name__ == '__main__':
     #print(friends_ids)
 
     x = friends_ids['response']['items']
-    #x.remove(29185587) #remove clown
+    #x.remove(29185587)
     for friend_id in x:
         friend_info = get_data(friend_id, 'users')
         user_fio(friend_info)
