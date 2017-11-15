@@ -45,7 +45,7 @@ if __name__ == '__main__':
     print(user_info)
     friends_info = get_data(USER_ID, 'friends')
     #print(friends_ids)
-
+    groups_dict = {}
     friends_ids = friends_info['response']['items']
     for friend_id in friends_ids:
         friend_info = get_data(friend_id, 'users')
@@ -56,5 +56,5 @@ if __name__ == '__main__':
         for group_id in friend_groups_ids:
             friend_group_info = get_group_info(group_id)
             #pprint(friend_group_info)
-            print(friend_group_info['response'][0]['name'])
+            #print(friend_group_info['response'][0]['name'])
         print('==================================')
