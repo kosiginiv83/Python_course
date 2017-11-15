@@ -1,9 +1,15 @@
 import requests
+import json
 from pprint import pprint
 
 
 VERSION = '5.68'
-TOKEN = '5dfd6b0dee902310df772082421968f4c06443abecbc082a8440cb18910a56daca73ac8d04b25154a1128'
+
+with open('inf0.json') as f:
+    data = json.load(f)
+    pprint(data)
+    TOKEN = data[0]['token']
+    USER_ID = data[0]['user_id']
 
 
 def get_data(user_id, query):
@@ -35,9 +41,9 @@ def user_fio(friend_info):
 
 
 if __name__ == '__main__':
-    user_info = get_data(29185587, 'users')
+    user_info = get_data(USER_ID, 'users')
     print(user_info)
-    friends_info = get_data(29185587, 'friends')
+    friends_info = get_data(USER_ID, 'friends')
     #print(friends_ids)
 
     friends_ids = friends_info['response']['items']
