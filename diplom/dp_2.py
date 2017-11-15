@@ -35,20 +35,17 @@ def user_fio(friend_info):
 
 
 if __name__ == '__main__':
-    user_info = get_data(251522831, 'users')
+    user_info = get_data(29185587, 'users')
     print(user_info)
-    friends_ids = get_data(251522831, 'friends')
+    friends_info = get_data(29185587, 'friends')
     #print(friends_ids)
 
-    x = friends_ids['response']['items']
-    #x.remove(29185587)
-    for friend_id in x:
+    friends_ids = friends_info['response']['items']
+    for friend_id in friends_ids:
         friend_info = get_data(friend_id, 'users')
         user_fio(friend_info)
-
         friend_groups_raw = get_data(friend_id, 'groups')
         #print(friend_groups_raw)
-        
         friend_groups_ids = friend_groups_raw['response']['items']
         for group_id in friend_groups_ids:
             friend_group_info = get_group_info(group_id)
