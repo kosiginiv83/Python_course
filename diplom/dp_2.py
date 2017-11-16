@@ -5,7 +5,7 @@ from pprint import pprint
 
 VERSION = '5.68'
 
-with open('inf0.json') as f:
+with open('info.json') as f:
     data = json.load(f)
     #pprint(data)
     TOKEN = data[0]['token']
