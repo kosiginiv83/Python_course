@@ -42,13 +42,9 @@ def get_friends_groups():
     friends_groups_list = []
     friends_info = get_data(USER_ID, 'friends')
     friends_ids = friends_info['response']['items']
-    #print(friends_ids)
     count = 1
     for friend_id in friends_ids:
-        #friend_info = get_data(friend_id, 'users')
-        #user_fio(friend_info)
         friend_groups_raw = get_data(friend_id, 'groups')
-        #print(friend_groups_raw)
         count = console_output(count)
         
         if 'response' in friend_groups_raw:
@@ -57,20 +53,24 @@ def get_friends_groups():
         elif 'error' in friend_groups_raw:
             error_code = friend_groups_raw['error']['error_code']
             error_msg = friend_groups_raw['error']['error_msg']
-            #print(friend_groups_raw)
             with open('log.txt', 'a') as log:
                 log.write(f'error_code: {error_code}, ')
                 log.write(f'error_msg: {error_msg}\n')
-        
+    
     friends_groups_set = set(friends_groups_list)
-    console_output('Done')
-    print('\nКоличество групп:', len(friends_groups_set))
+    #print('\nКоличество групп:', len(friends_groups_set))
     return friends_groups_set
 
 
 if __name__ == '__main__':
     try:
-        get_friends_groups()
+        user_groups_raw = get_data(USER_ID, 'groups')
+        user_groups_set = set(user_groups_raw['response']['items'])
+        #print(user_groups_ids)
+        friends_groups_set = get_friends_groups()
+        user_groups_set.difference_update(friends_groups_set)
+        console_output('Done\n')
+        print(user_groups_set)
     except:
         print("\tAn Error Occured")
         raise
