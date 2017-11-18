@@ -58,19 +58,45 @@ def get_friends_groups():
                 log.write(f'error_msg: {error_msg}\n')
     
     friends_groups_set = set(friends_groups_list)
-    #print('\nКоличество групп:', len(friends_groups_set))
+    #print('\nСуммарное количество уникальных групп друзей:',
+    #      len(friends_groups_set))
     return friends_groups_set
+
+
+def get_group_info(group_id):
+    params = {
+        'v': VERSION,
+        'access_token': TOKEN,
+        'group_id': group_id,
+        'fields': 'members_count',
+    }
+    response = requests.get("https://api.vk.com/method/groups.getById", params)
+    return response.json()
 
 
 if __name__ == '__main__':
     try:
+        groups_list = []
         user_groups_raw = get_data(USER_ID, 'groups')
         user_groups_set = set(user_groups_raw['response']['items'])
+        #print('\nКоличество групп пользователя:', len(user_groups_set))
         #print(user_groups_ids)
         friends_groups_set = get_friends_groups()
         user_groups_set.difference_update(friends_groups_set)
         console_output('Done\n')
-        print(user_groups_set)
+        #print('\nКоличество секретных групп:', len(user_groups_set))
+        #print(user_groups_set)
+        for group_id in user_groups_set:
+            group_dict = {}
+            group_info = get_group_info(group_id)
+            #pprint(group_info)
+            group_dict['gid'] = group_info['response'][0]['id']
+            group_dict['name'] = group_info['response'][0]['name']
+            group_dict['members_count'] = group_info['response'][0]['members_count']
+            groups_list.append(group_dict)
+        #pprint(groups_list)
+        with open('groups.json', 'w') as f:
+            json.dump(groups_list, f, ensure_ascii=False)
     except:
         print("\tAn Error Occured")
         raise
