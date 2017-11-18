@@ -10,8 +10,8 @@ VERSION = '5.68'
 
 with open('info.json') as f:
     data = json.load(f)
-    TOKEN = data[0]['token']
-    USER_ID = data[0]['user_id']
+    TOKEN = data[1]['token']
+    USER_ID = data[1]['user_id']
 
 
 def get_data(user_id, query):
@@ -96,7 +96,8 @@ if __name__ == '__main__':
             groups_list.append(group_dict)
         #pprint(groups_list)
         with open('groups.json', 'w') as f:
-            json.dump(groups_list, f, ensure_ascii=False)
+            json.dump(groups_list, f, sort_keys = True,
+                      indent = 2, ensure_ascii=False)
     except:
         print("\tAn Error Occured")
         raise
