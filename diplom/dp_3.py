@@ -2,6 +2,7 @@ import json
 import requests
 import subprocess
 import sys
+import math
 from pprint import pprint
 
 
@@ -41,6 +42,20 @@ def user_fio(friend_info):
     #print(friend_info)
 
 
+def console_output(i):
+    sys.stdout.write('\r')
+    if isinstance(i, int):
+        t = '|/-\\'
+        i = 0 if i == 4 else i
+        out = t[i]
+        i += 1
+    else:
+        out = i
+    sys.stdout.write(out)
+    sys.stdout.flush()
+    return i
+
+
 def get_friends_groups():
     friends_groups_list = []
     friends_info = get_data(USER_ID, 'friends')
@@ -52,23 +67,12 @@ def get_friends_groups():
         #user_fio(friend_info)
         friend_groups_raw = get_data(friend_id, 'groups')
         #print(friend_groups_raw)
-
-        t = '|/-\\'
-        sys.stdout.write('\r')
-        sys.stdout.write(t[i])
-        sys.stdout.flush()
-        i += 1
-        if i == 4:
-            i = 0
+        i = console_output(i)
         
         if 'response' in friend_groups_raw:
             friend_groups_ids = friend_groups_raw['response']['items']
             friends_groups_list += friend_groups_ids
         elif 'error' in friend_groups_raw:
-            """
-            'error_code': 18, 'error_msg': 'User was deleted or banned'
-            'error_code': 6, 'error_msg': 'Too many requests per second'
-            """
             error_code = friend_groups_raw['error']['error_code']
             error_msg = friend_groups_raw['error']['error_msg']
             #print(friend_groups_raw)
@@ -77,7 +81,8 @@ def get_friends_groups():
                 log.write(f'error_msg: {error_msg}\n')
         
     friends_groups_set = set(friends_groups_list)
-    print('\nКоличество групп', len(friends_groups_set))
+    console_output('Done')
+    print('\nКоличество групп:', len(friends_groups_set))
     
 
 if __name__ == '__main__':
