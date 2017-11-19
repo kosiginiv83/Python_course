@@ -35,18 +35,21 @@ def get_group_info(group_id):
     return response.json()
 
 
-def console_output(count):
+#def console_output(i, message):
+def console_output(**kwargs):
     sys.stdout.write('\r')
-    if isinstance(count, int):
+    message = kwargs['message']
+    if isinstance(kwargs['count'], int):
+        count = kwargs['count']
         t = '|/-\\'
         count = 0 if count == 4 else count
         out = t[count]
         count += 1
     else:
         out = count
-    sys.stdout.write(out)
+    sys.stdout.write(f"{message} {out}")
     sys.stdout.flush()
-    return count
+    #return count
 
 
 def get_friends_groups():
@@ -56,7 +59,7 @@ def get_friends_groups():
     count = 1
     for friend_id in friends_ids:
         friend_groups_raw = get_data(friend_id, 'groups')
-        count = console_output(count)
+        count = console_output(count=count, message="Получение данных с ВК:")
         #pprint(friend_groups_raw)
 
         if 'response' in friend_groups_raw:
@@ -84,7 +87,7 @@ if __name__ == '__main__':
         #print(user_groups_ids)
         friends_groups_set = get_friends_groups()
         user_groups_set.difference_update(friends_groups_set)
-        console_output("Получение данных с ВК выполнено.\n")
+        console_output(message="Получение данных с ВК выполнено.\n")
         #print('\nКоличество секретных групп:', len(user_groups_set))
         #print(user_groups_set)
         for group_id in user_groups_set:

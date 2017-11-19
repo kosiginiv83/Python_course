@@ -1,16 +1,5 @@
 error_code: 18, error_msg: User was deleted or banned
 error_code: 6, error_msg: Too many requests per second
+error_code: 7, error_msg: Permission to perform this action is denied
+"gid": 37456050
 ======================================================
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
-error_code: 18, error_msg: User was deleted or banned
