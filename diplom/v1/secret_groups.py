@@ -1,9 +1,7 @@
 import json
 import requests
-import subprocess
 import sys
-import math
-from pprint import pprint
+import time
 
 
 VERSION = '5.68'
@@ -58,23 +56,19 @@ def get_friends_groups():
     friends_ids = friends_info['response']['items']
     count = 1
     for friend_id in friends_ids:
-        friend_groups_raw = get_data(friend_id, 'groups')
-        count = console_output("Получение данных с ВК:", count)
-        #pprint(friend_groups_raw)
-
-        if 'response' in friend_groups_raw:
-            friend_groups_ids = friend_groups_raw['response']['items']
-            friends_groups_list += friend_groups_ids
-        elif 'error' in friend_groups_raw:
-            error_code = friend_groups_raw['error']['error_code']
-            error_msg = friend_groups_raw['error']['error_msg']
-            with open('log.txt', 'a', encoding='utf-8') as log:
-                log.write(f'error_code: {error_code}, ')
-                log.write(f'error_msg: {error_msg}\n')
-        
+        status = 'error'
+        while status != 'ok':
+            try:
+                friend_groups_raw = get_data(friend_id, 'groups')
+                count = console_output("Получение данных с ВК:", count)
+                if 'response' in friend_groups_raw:
+                    friend_groups_ids = friend_groups_raw['response']['items']
+                    friends_groups_list += friend_groups_ids
+                status = 'ok'
+            except:
+                status = 'error'
+                time.sleep(2)
     friends_groups_set = set(friends_groups_list)
-    #print('\nСуммарное количество уникальных групп друзей:',
-    #      len(friends_groups_set))
     return friends_groups_set
 
 
@@ -82,33 +76,32 @@ def main():
     groups_list = []
     user_groups_raw = get_data(USER_ID, 'groups')
     user_groups_set = set(user_groups_raw['response']['items'])
-    # print('\nКоличество групп пользователя:', len(user_groups_set))
-    # print(user_groups_ids)
     friends_groups_set = get_friends_groups()
     user_groups_set.difference_update(friends_groups_set)
     console_output("Получение данных с ВК: выполнено.\n")
-    # print('\nКоличество секретных групп:', len(user_groups_set))
-    # print(user_groups_set)
     count = 1
     for group_id in user_groups_set:
-        count = console_output("Обработка данных и запись в файл:", count)
-        group_dict = {}
-        group_info = get_group_info(group_id)
-        # pprint(group_info)
-        group_dict['gid'] = group_info['response'][0]['id']
-        group_dict['name'] = group_info['response'][0]['name']
-        
-        if 'deactivated' in group_info['response'][0]:
-            group_dict['members_count'] = 'group banned'
-            with open('log.txt', 'a', encoding='utf-8') as log:
-                log.write(f"name: {group_info['response'][0]['name']}, ")
-                log.write(f"deactivated: {group_info['response'][0]['deactivated']}\n")
-        elif 'members_count' in group_info['response'][0]:
-            group_dict['members_count'] = group_info['response'][0]['members_count']
-        else:
-            group_dict['members_count'] = 'None'
-        groups_list.append(group_dict)
-    # pprint(groups_list)
+        status = 'error'
+        while status != 'ok':
+            try:
+                count = console_output("Обработка данных и запись в файл:",
+                                       count)
+                group_dict = {}
+                group_info = get_group_info(group_id)
+                group_dict['gid'] = group_info['response'][0]['id']
+                group_dict['name'] = group_info['response'][0]['name']
+                if 'deactivated' in group_info['response'][0]:
+                    group_dict['members_count'] = 'group banned'
+                elif 'members_count' in group_info['response'][0]:
+                    group_dict['members_count'] = group_info['response'][0]\
+                                                ['members_count']
+                else:
+                    group_dict['members_count'] = 'Not available'
+                groups_list.append(group_dict)
+                status = 'ok'
+            except:
+                status = 'error'
+                time.sleep(2)
     with open('groups.json', 'w', encoding='utf-8') as f:
         json.dump(groups_list, f, sort_keys=True,
                   indent=2, ensure_ascii=False)

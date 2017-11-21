@@ -10,8 +10,8 @@ VERSION = '5.68'
 
 with open('info.json', encoding='utf-8') as f:
     data = json.load(f)
-    TOKEN = data[0]['token']
-    USER_ID = data[0]['user_id']
+    TOKEN = data[1]['token']
+    USER_ID = data[1]['user_id']
 
 
 def get_data(user_id, query):
@@ -62,12 +62,12 @@ def get_friends_groups():
         if 'response' in friend_groups_raw:
             friend_groups_ids = friend_groups_raw['response']['items']
             friends_groups_list += friend_groups_ids
-        elif 'error' in friend_groups_raw:
-            error_code = friend_groups_raw['error']['error_code']
-            error_msg = friend_groups_raw['error']['error_msg']
-            with open('log.txt', 'a', encoding='utf-8') as log:
-                log.write(f'error_code: {error_code}, ')
-                log.write(f'error_msg: {error_msg}\n')
+        #elif 'error' in friend_groups_raw:
+            #error_code = friend_groups_raw['error']['error_code']
+            #error_msg = friend_groups_raw['error']['error_msg']
+            #with open('log.txt', 'a', encoding='utf-8') as log:
+                #log.write(f'error_code: {error_code}, ')
+                #log.write(f'error_msg: {error_msg}\n')
         
     friends_groups_set = set(friends_groups_list)
     #print('\nСуммарное количество уникальных групп друзей:',
@@ -96,9 +96,9 @@ if __name__ == '__main__':
 
             if 'deactivated' in group_info['response'][0]:
                 group_dict['members_count'] = 'group banned'
-                with open('log.txt', 'a', encoding='utf-8') as log:
-                    log.write(f"name: {group_info['response'][0]['name']}, ")
-                    log.write(f"deactivated: {group_info['response'][0]['deactivated']}\n")
+                #with open('log.txt', 'a', encoding='utf-8') as log:
+                    #log.write(f"name: {group_info['response'][0]['name']}, ")
+                    #log.write(f"deactivated: {group_info['response'][0]['deactivated']}\n")
             elif 'members_count' in group_info['response'][0]:
                 group_dict['members_count'] = group_info['response'][0]['members_count']
             else:
@@ -106,7 +106,7 @@ if __name__ == '__main__':
             
             groups_list.append(group_dict)
         #pprint(groups_list)
-        with open('groups.json', 'w', encoding='utf-8') as f:
+        with open('groups_t.json', 'w', encoding='utf-8') as f:
             json.dump(groups_list, f, sort_keys = True,
                       indent = 2, ensure_ascii=False)
     except:
