@@ -2,6 +2,7 @@ import json
 import requests
 import sys
 import time
+from typing import Iterable
 
 
 VERSION = '5.68'
@@ -67,7 +68,25 @@ class Users:
 
 def main():
     user = Users(USER_ID)
-    friends = user.get_friends(USER_ID)
+    user_friends = LinkedList(user.user_friends)
+    #user_groups = LinkedList(user.user_groups)
+    
+    
+    """
+    print(dir(user))
+    print(user.user_id)
+    print(user.user_groups)
+    print(user.groups_count)
+    print(user.user_friends)
+    print(user.friends_count)
+    
+    for unit in friends:
+        print(unit)
+    print('====================================')
+    
+    for unit in groups:
+        print(unit)
+    """
 
 
 if __name__ == '__main__':
