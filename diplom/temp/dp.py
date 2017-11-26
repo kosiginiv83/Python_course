@@ -44,7 +44,7 @@ if __name__ == '__main__':
     user_info = get_data(USER_ID, 'users')
     print(user_info)
     friends_ids = get_data(USER_ID, 'friends')
-    #print(friends_ids)
+    print(friends_ids)
 
     x = friends_ids['response']['items']
     #x.remove(29185587)
