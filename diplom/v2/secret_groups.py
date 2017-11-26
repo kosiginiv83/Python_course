@@ -51,8 +51,9 @@ class Users:
         response = requests.get("https://api.vk.com/method/groups.get",
                                         params)
         data = response.json()
-        self.user_groups = data['response']['items']
-        self.groups_count = len(self.user_groups)
+        if 'response' in data:
+            self.user_groups = data['response']['items']
+            self.groups_count = len(self.user_groups)
         
         if user_id == USER_ID:
             response = requests.get("https://api.vk.com/method/friends.get",
@@ -68,25 +69,17 @@ class Users:
 
 def main():
     user = Users(USER_ID)
-    user_friends = LinkedList(user.user_friends)
-    #user_groups = LinkedList(user.user_groups)
+    user_friends_ids = LinkedList(user.user_friends)
+    friends_groups_ids = []
+    current = user_friends_ids.head
+    while current:
+        friend = Users(current.data)
+        friends_groups_ids += friend.user_groups
+        current = current.next
+    #print(friends_groups_ids)
+
+    user_groups_set.difference_update(friends_groups_set)
     
-    
-    """
-    print(dir(user))
-    print(user.user_id)
-    print(user.user_groups)
-    print(user.groups_count)
-    print(user.user_friends)
-    print(user.friends_count)
-    
-    for unit in friends:
-        print(unit)
-    print('====================================')
-    
-    for unit in groups:
-        print(unit)
-    """
 
 
 if __name__ == '__main__':
