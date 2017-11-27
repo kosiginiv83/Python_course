@@ -77,10 +77,35 @@ def main():
         friends_groups_ids += friend.user_groups
         current = current.next
     #print(friends_groups_ids)
-
-    user_groups_set.difference_update(friends_groups_set)
+    user_groups_ids_set = set(user.user_groups)
+    friends_groups_ids_set = set(friends_groups_ids)
+    user_groups_ids_set.difference_update(friends_groups_ids_set)
+    #print(user_groups_ids_set)
+    user_groups_ids_link_list = LinkedList(user_groups_ids_set)
     
-
+    group_dict = {}
+    current = user_groups_ids_link_list.head
+    while current:
+        params = {
+            'v': VERSION,
+            'access_token': TOKEN,
+            'group_id': group_id,
+            'fields': 'members_count',
+        }
+        response = requests.get("https://api.vk.com/method/groups.getById", params)
+        return response.json()
+        group_info = get_group_info(group_id)
+        group_dict['gid'] = group_info['response'][0]['id']
+        group_dict['name'] = group_info['response'][0]['name']
+        if 'deactivated' in group_info['response'][0]:
+            group_dict['members_count'] = 'group banned'
+        elif 'members_count' in group_info['response'][0]:
+            group_dict['members_count'] = group_info['response'][0] \
+                ['members_count']
+        else:
+            group_dict['members_count'] = 'Not available'
+        groups_list.append(group_dict)
+    
 
 if __name__ == '__main__':
     try:
