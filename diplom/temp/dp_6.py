@@ -11,8 +11,8 @@ VERSION = '5.68'
 
 with open('info.json', encoding='utf-8') as f:
     data = json.load(f)
-    TOKEN = data[1]['token']
-    USER_ID = data[1]['user_id']
+    TOKEN = data[0]['token']
+    USER_ID = data[0]['user_id']
 
 
 def get_data(user_id, query):
