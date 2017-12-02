@@ -3,6 +3,8 @@ import requests
 import sys
 import time
 from typing import Iterable
+from tqdm import tqdm, trange
+from socket import timeout
 #from pprint import pprint
 
 
@@ -67,16 +69,29 @@ class Users:
             self.friends_count = len(self.user_friends)
 
 
+#class ConsoleOutput:
+
+
+
 def main():
     user = Users(USER_ID)
     user_friends_ids = LinkedList(user.user_friends)
     friends_groups_ids = []
     current = user_friends_ids.head
-    while current:
+    print('Получение групп друзей:')
+    #while current:
+        #for i in tqdm(range(user.friends_count)):
+    rng = range(user.friends_count)
+    tqdm_range = tqdm(rng, mininterval=0.5)
+    #tqdm_range = tqdm(rng, total=user.friends_count, unit='friends')
+    for i in tqdm_range:
+        #sys.stdout.write('\r')
         try:
             friend = Users(current.data)
             friends_groups_ids += friend.user_groups
             current = current.next
+        except timeout:
+            time.sleep(5)
         except:
             time.sleep(2)
     user_groups_ids_set = set(user.user_groups)
@@ -86,7 +101,15 @@ def main():
 
     groups_list = []
     current = user_groups_ids_link_list.head
-    while current:
+    print('Получение данных по секретным группам:')
+    #while current:
+        #for i in tqdm(range(len(user_groups_ids_set))):
+    rng = range(len(user_groups_ids_set))
+    tqdm_range = tqdm(rng, mininterval=0.5)
+    #tqdm_range = tqdm(rng, total=len(user_groups_ids_set), unit='groups')
+    for i in tqdm_range:
+        #sys.stdout.write('\r')
+    #for i in trange(len(user_groups_ids_set)):
         try:
             group_dict = {}
             params = {
@@ -95,7 +118,8 @@ def main():
                 'group_id': current.data,
                 'fields': 'members_count',
             }
-            response = requests.get("https://api.vk.com/method/groups.getById", params)
+            response = requests.get("https://api.vk.com/method/groups.getById",
+                                    params)
             data = response.json()
             group_dict['gid'] = data['response'][0]['id']
             group_dict['name'] = data['response'][0]['name']
@@ -108,6 +132,8 @@ def main():
                 group_dict['members_count'] = 'Not available'
             groups_list.append(group_dict)
             current = current.next
+        except timeout:
+            time.sleep(5)
         except:
             time.sleep(2)
         
