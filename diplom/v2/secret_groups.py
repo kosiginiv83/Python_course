@@ -99,15 +99,16 @@ def main():
                 time.sleep(5)
             except:
                 time.sleep(2)
-    user_groups_ids_set = set(user.user_groups)
-    friends_groups_ids_set = set(friends_groups_ids)
-    user_groups_ids_set.difference_update(friends_groups_ids_set)
-    user_groups_ids_link_list = LinkedList(user_groups_ids_set)
+    secret_groups_list = []
+    for group_id in user.user_groups:
+        if friends_groups_ids.count(group_id) <= MATCH:
+            secret_groups_list.append(group_id)
+    user_groups_ids_link_list = LinkedList(secret_groups_list)
 
     groups_list = []
     current = user_groups_ids_link_list.head
     print('Получение данных по секретным группам:')
-    with tqdm(total=len(user_groups_ids_set), mininterval=0.5) as pbar:
+    with tqdm(total=len(secret_groups_list), mininterval=0.5) as pbar:
         while current:
             try:
                 group_dict = {}
